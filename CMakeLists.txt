@@ -40,7 +40,7 @@ add_executable(timerLamps
     )
 
 # pull in common dependencies
-target_link_libraries(timerLamps pico_stdlib)
+target_link_libraries(timerLamps pico_stdlib pico_time hardware_gpio)
 
 if (PICO_CYW43_SUPPORTED)
     target_link_libraries(timerLamps pico_cyw43_arch_none)

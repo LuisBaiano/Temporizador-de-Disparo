@@ -5,9 +5,9 @@
 
 /* Configuração de Hardware */
 #define BUTTON_PIN   5   ///< Pino GPIO do botão (Botão A do BitDogLab)
-#define BLUE_PIN    11   ///< Pino GPIO do LED azul (RGB)
-#define RED_PIN     12   ///< Pino GPIO do LED vermelho (RGB)
-#define GREEN_PIN   13   ///< Pino GPIO do LED verde (RGB)
+#define BLUE_PIN    12   ///< Pino GPIO do LED azul (RGB)
+#define RED_PIN     13   ///< Pino GPIO do LED vermelho (RGB)
+#define GREEN_PIN   11   ///< Pino GPIO do LED verde (RGB)
 
 /* Constantes do Sistema */
 #define DEBOUNCE_TIME_MS   250  ///< Tempo mínimo entre pressionamentos válidos (debounce)
@@ -59,6 +59,7 @@ int64_t alarm_callback(alarm_id_t id, void *user_data) {
  * e inicia sequência dos LEDs se o sistema estiver livre. Configurado com pull-up
  * para hardware BitDogLab (botão ativo em nível baixo).
  */
+
 void button_isr(uint gpio, uint32_t events) {
     if (gpio != BUTTON_PIN) return;
 
@@ -85,8 +86,9 @@ void button_isr(uint gpio, uint32_t events) {
  * 
  * Inicializa periféricos e entra em modo de baixo consumo.
  * 
- * @return int Status de saída (não utilizado em sistemas embarcados)
+ * Insere um sleep_ms(150) para reduzir o uso da CPU e permitir tempo de leitura do sinal do botão
  */
+
 int main() {
     stdio_init_all();
 
@@ -115,5 +117,9 @@ int main() {
         true, 
         &button_isr
     );
+
+    while (1) {
+        sleep_ms(150);
+    }
 
 }
